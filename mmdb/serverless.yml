@@ -1,19 +1,29 @@
-# "org" ensures this Service is used with the correct Serverless Framework Access Key.
 org: fe23devs
-# "service" is the name of this project. This will also be added to your AWS resource names.
 service: mmdb
 
 provider:
   name: aws
   runtime: nodejs20.x
-  # Uncomment to easily set up a custom domain. Read the docs for more details:
-  # https://www.serverless.com/framework/docs/providers/aws/guide/domains
-  # domain: api.example.com
+  region: eu-north-1
+  iam:
+    role: arn:aws:iam::024848481193:role/BasicLambdaRole
 
 functions:
-  hello:
-    handler: handler.hello
+  GetKey:
+    handler: functions/GetKey/index.handler
     events:
       - httpApi:
-          path: /
-          method: get
+          path: /api/keys
+          method: GET
+  GetMovies:
+    handler: functions/GetMovies/index.handler
+    events:
+      - httpApi:
+          path: /api/movies
+          method: GET
+  PostMovie:
+    handler: functions/PostMovie/index.handler
+    events:
+      - httpApi:
+          path: /api/movies
+          method: POST
